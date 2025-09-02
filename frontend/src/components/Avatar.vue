@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import * as THREE from 'three'
 import { Character } from '../three/character'
+import Sidebar from './Sidebar.vue'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
@@ -77,6 +78,7 @@ function talk() {
 
 <template>
   <div>
+    <Sidebar />
     <el-button type="primary" @click="talk" style="position: absolute; top: 10px; left: 10px; z-index: 10;">
       Сказать
     </el-button>
