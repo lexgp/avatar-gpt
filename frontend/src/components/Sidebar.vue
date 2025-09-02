@@ -16,10 +16,13 @@
     width="400px"
   >
     <el-input
+      @key.c.enter
       type="textarea"
       v-model="messageText"
       placeholder="Введите сообщение"
       rows="4"
+      id="messageInput"
+      tabindex="0"
     ></el-input>
     <template #footer>
       <el-button @click="dialogVisible = false">Отмена</el-button>
@@ -30,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, nextTick, watch } from 'vue'
 const dialogVisible = ref(false)
 const messageText = ref('')
 
@@ -52,6 +55,17 @@ function sendMessage() {
   messageText.value = ''
   dialogVisible.value = false
 }
+
+watch(dialogVisible, (val) => {
+  if (val) {
+    setTimeout(() => {
+      nextTick(() => {
+        const messageInput = document.querySelector('#messageInput') as HTMLInputElement
+        messageInput.focus()
+      })
+    }, 500);
+  }
+})
 
 </script>
 

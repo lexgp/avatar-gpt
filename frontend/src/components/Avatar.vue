@@ -11,7 +11,6 @@ let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 const character = new Character();
 
-
 // Анимация
 const clock = new THREE.Clock();
 let previousTime = 0;
@@ -71,17 +70,35 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-function talk() {
-  character.speakForDuration(4); // Говорить 4 секунды
+const sendMessage = (text: string) => {
+  fetch("/api/llm", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ text: text })
+  })
+    .then(res => res.json())
+    .then((data: { text: string, audio: string | null }) => {
+      console.log(data)
+      const base64String = data.audio
+      if (base64String) {
+        const audio = new Audio("data:audio/ogg;base64," + base64String)
+        character.speakForDuration();
+        audio.addEventListener("ended", () => {
+          character.stopTalking();
+        })
+        audio.play()
+      }
+    })
 }
 </script>
 
 <template>
   <div>
-    <Sidebar />
-    <el-button type="primary" @click="talk" style="position: absolute; top: 10px; left: 10px; z-index: 10;">
-      Сказать
-    </el-button>
+    <Sidebar
+      @send-message="sendMessage"
+    />
     <canvas ref="canvasRef" style="width: 100vw; height: 100vh; display: block;"></canvas>
   </div>
 </template>

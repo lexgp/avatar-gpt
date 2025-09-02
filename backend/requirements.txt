@@ -1,0 +1,4 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+yandex-cloud-ml-sdk==0.3.0

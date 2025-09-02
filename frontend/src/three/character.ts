@@ -97,7 +97,7 @@ export class Character {
     });
   }
 
-  speakForDuration(duration: number) {
+  speakForDuration(duration: number|null = null) {
     this.startTalking(duration);
   }
 
@@ -134,7 +134,7 @@ export class Character {
       } else {
         const targetX = 0.05
         const targetY = 0.3
-        const step = 0.003
+        const step = 0.005
         const diffX = targetX - this.headBone.rotation.x
         const diffY = targetY - this.headBone.rotation.y
         if (Math.abs(diffX) > step) {
