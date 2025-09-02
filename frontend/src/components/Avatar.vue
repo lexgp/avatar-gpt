@@ -1,4 +1,4 @@
-<script setup lang="ts">
+sendAudio<script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import * as THREE from 'three'
 import { Character } from '../three/character'
@@ -70,34 +70,57 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-const sendMessage = (text: string) => {
-  fetch("/api/llm", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ text: text })
-  })
-    .then(res => res.json())
-    .then((data: { text: string, audio: string | null }) => {
-      console.log(data)
-      const base64String = data.audio
-      if (base64String) {
-        const audio = new Audio("data:audio/ogg;base64," + base64String)
-        character.speakForDuration();
-        audio.addEventListener("ended", () => {
-          character.stopTalking();
-        })
-        audio.play()
-      }
+function playAnswer(answer: any) {
+  const base64String = answer.audio
+  if (base64String) {
+    const audio = new Audio("data:audio/ogg;base64," + base64String)
+    character.speakForDuration();
+    audio.addEventListener("ended", () => {
+      character.stopTalking();
     })
+    audio.play()
+  }
 }
+
+const sendMessage = async (text: string) => {
+  try {
+    const response = await fetch("/api/llm", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ text: text })
+    })
+    const result = await response.json()
+    playAnswer(result)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+async function sendAudio(blob: Blob) {
+  const formData = new FormData()
+  formData.append('file', blob, 'recording.webm')
+
+  try {
+    const response = await fetch('/api/upload_audio', {
+      method: 'POST',
+      body: formData,
+    })
+    const result = await response.json()
+    playAnswer(result)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 </script>
 
 <template>
   <div>
     <Sidebar
       @send-message="sendMessage"
+      @send-audio="sendAudio"
     />
     <canvas ref="canvasRef" style="width: 100vw; height: 100vh; display: block;"></canvas>
   </div>

@@ -5,8 +5,16 @@
       Добро пожаловать! Здесь можно узнать основную информацию о системе.
     </p>
     <div class="buttons">
-      <el-button type="primary" @click="askQuestion">Задать вопрос</el-button>
-      <el-button type="success" @click="writeMessage">Написать сообщение</el-button>
+      <!-- <el-button type="primary" @click="askQuestion">Задать вопрос</el-button> -->
+      <el-button
+        :type="isRecording ? 'danger' : 'primary'"
+        @click="startRecording"
+      >
+        {{ isRecording ? '🎤 Стоп' : '🎤 Задать вопрос' }}
+      </el-button>
+
+      <span class="text-loading" v-if="isRecording">Идёт запись...</span>
+      <el-button v-else type="success" @click="writeMessage">Написать сообщение</el-button>
     </div>
   </div>
 
@@ -34,16 +42,22 @@
 
 <script setup lang="ts">
 import { ref, nextTick, watch } from 'vue'
+
+const isRecording = ref(false)
+const audioChunks: BlobPart[] = []
+let mediaRecorder: MediaRecorder | null = null
+
 const dialogVisible = ref(false)
 const messageText = ref('')
 
 const emit = defineEmits<{
   (e: 'send-message', text: string): void
+  (e: 'send-audio', blob: Blob): void
 }>()
 
-function askQuestion() {
-  console.log('Задать вопрос')
-}
+// function askQuestion() {
+//   console.log('Задать вопрос')
+// }
 
 function writeMessage() {
   console.log('refjerifier')
@@ -66,6 +80,37 @@ watch(dialogVisible, (val) => {
     }, 500);
   }
 })
+
+async function startRecording() {
+
+  if (isRecording.value) {
+    await stopAndSendRecording()
+    return
+  }
+
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+  mediaRecorder = new MediaRecorder(stream)
+  audioChunks.length = 0
+
+  mediaRecorder.ondataavailable = (event) => {
+    audioChunks.push(event.data)
+  }
+
+  mediaRecorder.start()
+  isRecording.value = true
+}
+
+async function stopAndSendRecording() {
+  if (!mediaRecorder || !isRecording.value) return
+
+  mediaRecorder.onstop = async () => {
+    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' })
+    emit('send-audio', audioBlob)
+  }
+
+  mediaRecorder.stop()
+  isRecording.value = false
+}
 
 </script>
 
@@ -102,5 +147,10 @@ watch(dialogVisible, (val) => {
 }
 .buttons > * {
   width: 50%;
+}
+
+.text-loading {
+  padding: 8px 15px;
+  font-size: 14px;
 }
 </style>
