@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+avatar-frontend
+avatar-frontend.zip
 *.local
 
 # Editor directories and files

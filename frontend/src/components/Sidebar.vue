@@ -1,8 +1,8 @@
 <template>
   <div class="sidebar">
-    <h2 class="title">Система знаний</h2>
+    <h2 class="title">Справочная система</h2>
     <p class="description">
-      Добро пожаловать! Здесь можно узнать основную информацию о системе.
+      Голосовой доступ к документообороту и RAG-системе.
     </p>
     <div class="buttons">
       <!-- <el-button type="primary" @click="askQuestion">Задать вопрос</el-button> -->
