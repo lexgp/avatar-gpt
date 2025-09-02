@@ -9,15 +9,18 @@
 ---
 
 ## Структура проекта
+
+```text
 .
-├── backend/ # FastAPI сервер
-│ ├── main.py
-│ ├── requirements.txt
-│ └── .env
-└── frontend/ # Vue 3 + Element Plus клиент
-  ├── src/
-  ├── package.json
-  └── vite.config.ts
+├── backend/             # FastAPI сервер
+│   ├── main.py
+│   ├── requirements.txt
+│   └── .env
+└── frontend/            # Vue 3 + Element Plus клиент
+    ├── src/
+    ├── package.json
+    └── vite.config.ts
+```
 
 ## Установка и запуск
 
