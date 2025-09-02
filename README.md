@@ -1,5 +1,55 @@
-# Vue 3 + TypeScript + Vite
+# Визуальный голосовой ассистент
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Проект для работы с текстовыми и голосовыми запросами.
+Бэкенд реализован на **FastAPI**, фронтенд — на **Vue 3 + TS + Element Plus**.
+Используется интеграция с **Yandex Cloud ML** для генерации аудиоответов.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+![Скриншот](info/screenshot1.jpg)
+
+---
+
+## Структура проекта
+.
+├── backend/ # FastAPI сервер
+│ ├── main.py
+│ ├── requirements.txt
+│ └── .env
+└── frontend/ # Vue 3 + Element Plus клиент
+  ├── src/
+  ├── package.json
+  └── vite.config.ts
+
+## Установка и запуск
+
+### 1. Бэкенд
+
+```bash
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Создать файл .env:
+
+```ini
+YCloudML_FOLDER_ID=<folder_id>
+YCloudML_AUTH_TOKEN=<auth_token>
+```
+
+Запуск сервера:
+```bash
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### 2. Фронтенд
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+По умолчанию запускается на http://localhost:3000/.
+
+
