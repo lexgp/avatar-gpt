@@ -111,7 +111,7 @@ export class Character {
 
   updateTalkingAnimation(deltaTime: number) {
     if (this.isTalking && this.mouthMeshes.length > 0) {
-      this.talkTimer += deltaTime * 5; // Скорость анимации говорения
+      this.talkTimer += deltaTime * 25; // Скорость анимации говорения
       const val = (Math.sin(this.talkTimer) * 0.5 + 0.5) * 0.8;
       
       this.mouthMeshes.forEach(mesh => {

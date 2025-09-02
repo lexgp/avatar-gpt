@@ -42,8 +42,8 @@ class YandexSpeechService:
     def synthesize(
         self,
         text: str,
-        voice: str = "oksana",
-        emotion: str = "good",
+        voice: str = "tanya",
+        emotion: str = "evil",
         speed: float = 1.0,
         format: str = "oggopus",
         return_type: str = "base64",

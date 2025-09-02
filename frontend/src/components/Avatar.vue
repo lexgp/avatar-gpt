@@ -10,6 +10,7 @@ let renderer: THREE.WebGLRenderer
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 const character = new Character();
+const dialogHistory = [] as Array<string>
 
 // Анимация
 const clock = new THREE.Clock();
@@ -71,6 +72,13 @@ function animate() {
 }
 
 function playAnswer(answer: any) {
+  dialogHistory.push(`Я говорил: ${answer.input_text}. Ты ответила: ${answer.text}.`)
+
+  const MAX_HISTORY_SIZE = 10
+  if (dialogHistory.length > MAX_HISTORY_SIZE) {
+    dialogHistory.splice(0, MAX_HISTORY_SIZE - dialogHistory.length)
+  }
+
   const base64String = answer.audio
   if (base64String) {
     const audio = new Audio("data:audio/ogg;base64," + base64String)
@@ -89,7 +97,7 @@ const sendMessage = async (text: string) => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ text: text })
+      body: JSON.stringify({ text: text, history: dialogHistory })
     })
     const result = await response.json()
     playAnswer(result)
@@ -101,6 +109,9 @@ const sendMessage = async (text: string) => {
 async function sendAudio(blob: Blob) {
   const formData = new FormData()
   formData.append('file', blob, 'recording.webm')
+  dialogHistory.forEach((item: any) => {
+    formData.append('history', item)
+  })
 
   try {
     const response = await fetch('/api/upload_audio', {

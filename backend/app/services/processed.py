@@ -4,13 +4,13 @@ from app.config import YCloudML_FOLDER_ID, YCloudML_AUTH_TOKEN
 
 speech_service = YandexSpeechService(YCloudML_AUTH_TOKEN, YCloudML_FOLDER_ID)
 
-def process_text_with_tts(input_text: str):
+def process_text_with_tts(input_text: str, history: list[str]):
     """Запрос к LLM и озвучивание ответа."""
-    reply_text = get_llm_reply(input_text)
+    reply_text = get_llm_reply(input_text, history)
     audio_base64 = speech_service.synthesize(
         text=reply_text,
         voice="oksana",
         emotion="good",
         speed=1.0,
     )
-    return {"text": reply_text, "audio": audio_base64}
+    return {"text": reply_text, "audio": audio_base64, "input_text": input_text}
