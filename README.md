@@ -13,11 +13,19 @@
 ```text
 .
 ├── backend/             # FastAPI сервер
-│   ├── main.py
+│   │── app
+│   │  │── services
+│   │  │── main.py
+│   │  ├── llm.py
+│   │  └── config.py
 │   ├── requirements.txt
 │   └── .env
 └── frontend/            # Vue 3 + Element Plus клиент
     ├── src/
+    │  │── App.vue
+    │  │── main.ts
+    │  │── three
+    │  └── components
     ├── package.json
     └── vite.config.ts
 ```
