@@ -5,6 +5,7 @@ import { Character } from '../three/character'
 import Sidebar from './Sidebar.vue'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+const isProcessing = ref(false)
 
 let renderer: THREE.WebGLRenderer
 let scene: THREE.Scene
@@ -91,6 +92,7 @@ function playAnswer(answer: any) {
 }
 
 const sendMessage = async (text: string) => {
+  isProcessing.value = true
   try {
     const response = await fetch("/api/llm", {
       method: "POST",
@@ -101,12 +103,15 @@ const sendMessage = async (text: string) => {
     })
     const result = await response.json()
     playAnswer(result)
+    isProcessing.value = false
   } catch (err) {
     console.error(err)
+    isProcessing.value = false
   }
 }
 
 async function sendAudio(blob: Blob) {
+  isProcessing.value = true
   const formData = new FormData()
   formData.append('file', blob, 'recording.webm')
   dialogHistory.forEach((item: any) => {
@@ -120,8 +125,10 @@ async function sendAudio(blob: Blob) {
     })
     const result = await response.json()
     playAnswer(result)
+    isProcessing.value = false
   } catch (err) {
     console.error(err)
+    isProcessing.value = false
   }
 }
 
@@ -132,6 +139,7 @@ async function sendAudio(blob: Blob) {
     <Sidebar
       @send-message="sendMessage"
       @send-audio="sendAudio"
+      :is-processing="isProcessing"
     />
     <canvas ref="canvasRef" style="width: 100vw; height: 100vh; display: block;"></canvas>
   </div>

@@ -8,13 +8,20 @@
       <!-- <el-button type="primary" @click="askQuestion">Задать вопрос</el-button> -->
       <el-button
         :type="isRecording ? 'danger' : 'primary'"
+        :loading="isProcessing"
         @click="startRecording"
       >
         {{ isRecording ? '🎤 Стоп' : '🎤 Задать вопрос' }}
       </el-button>
 
       <span class="text-loading" v-if="isRecording">Идёт запись...</span>
-      <el-button v-else type="success" @click="writeMessage">Написать сообщение</el-button>
+      <el-button v-else
+        type="success"
+        :loading="isProcessing"
+        @click="writeMessage"
+      >
+        Написать сообщение
+      </el-button>
     </div>
   </div>
 
@@ -54,6 +61,13 @@ const emit = defineEmits<{
   (e: 'send-message', text: string): void
   (e: 'send-audio', blob: Blob): void
 }>()
+
+defineProps({
+  isProcessing: {
+    type: Boolean,
+    default: false
+  }
+})
 
 // function askQuestion() {
 //   console.log('Задать вопрос')

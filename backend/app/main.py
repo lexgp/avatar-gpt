@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from app.services.speech import YandexSpeechService
 from app.services.processed import process_text_with_tts
 from app.config import YCloudML_FOLDER_ID, YCloudML_AUTH_TOKEN
-from typing import List
+from typing import Optional, List
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
@@ -24,7 +24,7 @@ async def llm_endpoint(request: LLMRequest):
 @api_router.post("/upload_audio")
 async def upload_audio(
         file: UploadFile = File(...),
-        history: List[str] = Form(...)
+        history: Optional[List[str]] = Form([])
     ):
     # print(history)
     audio_bytes = await file.read()
