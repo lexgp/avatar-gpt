@@ -94,7 +94,7 @@ function playAnswer(answer: any) {
 const sendMessage = async (text: string) => {
   isProcessing.value = true
   try {
-    const response = await fetch("/aapi/llm", {
+    const response = await fetch("/api-avatar/llm", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -119,7 +119,7 @@ async function sendAudio(blob: Blob) {
   })
 
   try {
-    const response = await fetch('/aapi/upload_audio', {
+    const response = await fetch('/api-avatar/upload_audio', {
       method: 'POST',
       body: formData,
     })

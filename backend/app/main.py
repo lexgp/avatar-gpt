@@ -8,7 +8,7 @@ from app.config import YCloudML_FOLDER_ID, YCloudML_AUTH_TOKEN
 from typing import Optional, List
 
 app = FastAPI()
-api_router = APIRouter(prefix="/api")
+api_router = APIRouter(prefix="/api-avatar")
 speech_service = YandexSpeechService(YCloudML_AUTH_TOKEN, YCloudML_FOLDER_ID)
 
 class LLMRequest(BaseModel):
