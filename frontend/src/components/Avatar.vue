@@ -42,7 +42,7 @@ onMounted(() => {
   scene.add(dirLight)
 
   // Создание персонажа
-  character.loadModel('/68b6c51d3000de881070b3dc.glb', (model: THREE.Object3D) => {
+  character.loadModel('/avatar/68b6c51d3000de881070b3dc.glb', (model: THREE.Object3D) => {
     scene.add(model);
   });
 
@@ -94,7 +94,7 @@ function playAnswer(answer: any) {
 const sendMessage = async (text: string) => {
   isProcessing.value = true
   try {
-    const response = await fetch("/api/llm", {
+    const response = await fetch("/aapi/llm", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -119,7 +119,7 @@ async function sendAudio(blob: Blob) {
   })
 
   try {
-    const response = await fetch('/api/upload_audio', {
+    const response = await fetch('/aapi/upload_audio', {
       method: 'POST',
       body: formData,
     })
