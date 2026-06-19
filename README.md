@@ -76,6 +76,6 @@ docker compose -f docker-compose.prod.yml up -d --build
 По умолчанию запускается на http://localhost:3000/.
 
 ### TODO:
-- Докеризация
+- ~~Докеризация~~
 - Настроить деплой
 
