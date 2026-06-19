@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: avatar-backend
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "8020:8000"

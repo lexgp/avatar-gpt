@@ -50,7 +50,7 @@ YCloudML_AUTH_TOKEN=<auth_token>
 
 Запуск сервера:
 ```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ### 2. Фронтенд
@@ -60,6 +60,12 @@ cd frontend
 npm install
 npm run dev
 ```
+
+Или через докер:
+```bash
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
 
 По умолчанию запускается на http://localhost:3000/.
 
