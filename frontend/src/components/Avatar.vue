@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { Character } from '../three/character'
 import Sidebar from './Sidebar.vue'
 
+const baseURL = import.meta.env.VITE_API_URL
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const isProcessing = ref(false)
 
@@ -94,7 +95,7 @@ function playAnswer(answer: any) {
 const sendMessage = async (text: string) => {
   isProcessing.value = true
   try {
-    const response = await fetch("/api-avatar/llm", {
+    const response = await fetch(baseURL + "/api-avatar/llm", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -119,7 +120,7 @@ async function sendAudio(blob: Blob) {
   })
 
   try {
-    const response = await fetch('/api-avatar/upload_audio', {
+    const response = await fetch(baseURL + '/api-avatar/upload_audio', {
       method: 'POST',
       body: formData,
     })

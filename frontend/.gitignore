@@ -24,3 +24,4 @@ avatar-frontend.zip
 *.njsproj
 *.sln
 *.sw?
+.env

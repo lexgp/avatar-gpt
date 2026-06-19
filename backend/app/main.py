@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI, APIRouter
 from fastapi import File, UploadFile, Form
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from app.services.speech import YandexSpeechService
 from app.services.processed import process_text_with_tts
@@ -8,6 +9,12 @@ from app.config import YCloudML_FOLDER_ID, YCloudML_AUTH_TOKEN
 from typing import Optional, List
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], allow_credentials=False, # TODO: Authorization не будет работать
+    allow_methods=["*"],  # любые методы
+    allow_headers=["*"],  # любые заголовки
+)
 api_router = APIRouter(prefix="/api-avatar")
 speech_service = YandexSpeechService(YCloudML_AUTH_TOKEN, YCloudML_FOLDER_ID)
 
